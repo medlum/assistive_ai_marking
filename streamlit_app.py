@@ -22,7 +22,7 @@ login_page = st.Page(login, title="Log in", icon=":material/login:")
 logout_page = st.Page(logout, title="Log out (to delete data)", icon=":material/logout:")
 
 mas_reflection_journal = st.Page("components/main.py", 
-                   title="MAS Reflection Journal", 
+                   title="Word document Report", 
                    icon=":material/draft:")
 
 if st.session_state.logged_in:

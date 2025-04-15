@@ -23,26 +23,25 @@ with st.sidebar:
 
     model_id = model_list[0]    
 
-    with st.expander(":blue[SYSTEM SETUP]"):
-
-        tab1, tab2 = st.tabs(["Set your prompts", "Default Prompt settings"])
-
-        user_system_message = tab1.text_area("Enter prompts in points", height=200, placeholder="- First prompt\n- Second prompt\n- Third prompt")
-
-        tab2.text(default_system_message)
-
-        st.divider()
-        temperature_setting = 0.2
-
-        temperature_slider = st.slider("Temperature Parameter (default: 0.2)", 
-                                min_value=0.1, 
-                                max_value=1.0, step=0.1, 
-                                value=temperature_setting,
-                                help=ai_temperature_msg)
-        
-        if temperature_slider != temperature_setting:
-            temperature_setting = temperature_slider
-
+#    with st.expander(":blue[SYSTEM SETUP]"):
+#
+#        tab1, tab2 = st.tabs(["Set your prompts", "Default Prompt settings"])
+#
+#        user_system_message = tab1.text_area("Enter prompts in points", height=200, placeholder="- First prompt\n- Second prompt\n- Third prompt")
+#
+#        tab2.text(default_system_message)
+#
+#        st.divider()
+#        temperature_setting = 0.2
+#
+#        temperature_slider = st.slider("Temperature Parameter (default: 0.2)", 
+#                                min_value=0.1, 
+#                                max_value=1.0, step=0.1, 
+#                                value=temperature_setting,
+#                                help=ai_temperature_msg)
+#        
+#        if temperature_slider != temperature_setting:
+#            temperature_setting = temperature_slider
 
     #pdf = './data/fmi_marking_rubrics.pdf'
     pdf = st.file_uploader(":gray[Upload marking rubrics]", ".pdf")
@@ -52,12 +51,10 @@ with st.sidebar:
         for page in reader.pages:
             rubric += page.extract_text()
         st.success("Marking rubrics accepted")
+        st.write(rubric)
 
-    
     group_zip = st.sidebar.file_uploader(":gray[Upload a zip file]", type=['zip'], help='Zip file should contain students submission in .docx')
-    
-   
-
+       
     st.markdown(f'<span style="font-size:12px; color:gray;">{disclaimer_var}</span>', unsafe_allow_html=True)
     st.markdown(buymecoffee_btn_css, unsafe_allow_html=True)
     if st.button("☕ Buy me coffee"):
@@ -75,13 +72,9 @@ if group_zip is not None:
         if 'msg_history' not in st.session_state:
             st.session_state.msg_history = []
         
-        #  system_message is set to default if user did not include system prompt in line 45
-        if user_system_message is None:
-            st.session_state.msg_history.append({"role": "system", 
-                                                "content": f"{default_system_message}"})
-        else:
-            st.session_state.msg_history.append({"role": "system", 
-                                                "content": f"{user_system_message}"})
+            
+        st.session_state.msg_history.append({"role": "system", 
+                                            "content": f"{system_message}"})
         
         st.session_state.msg_history.append({"role": "system", 
                                             "content": f"Here are the marking rubrics: {rubric}"})
@@ -97,6 +90,8 @@ if group_zip is not None:
 
         st.subheader(f":blue[{key}]")
 
+       # st.text(f"msg_history : {st.session_state.msg_history}")
+
         with st.expander(f":grey[*Submitted report*]"):         
             st.write(extracted_contents[key][1])            
 
@@ -108,7 +103,7 @@ if group_zip is not None:
                         stream = client.chat_completion(
                             model=model_id,
                             messages=st.session_state.msg_history,
-                            temperature=temperature_setting,
+                            temperature=0.2,
                             max_tokens=5524,
                             top_p=0.7,
                             stream=True

@@ -60,21 +60,11 @@ def process_data(data):
     # Convert list of dictionaries to DataFrame
     df = pd.DataFrame(data)
 
-    # Sum the values in 'Program Correctness', 'Code Readability', 'Code Efficiency', 'Documentation', and 'Assignment Specifications'
-    df['Total'] = df['Content (30 marks)'] + df['Organisation and Structure (10 marks)'] + df['Referencing (10 marks)']
+    df['Total'] = df.select_dtypes(include='number').sum(axis=1)
 
-    
-    cols = ['Student Name', 
-            'Content (30 marks)', 
-            'Organisation and Structure (10 marks)', 
-            'Referencing (10 marks)',
-            'Total',
-            'Feedback'
-            ]
+    return df
 
-    return df[cols]
-
-default_system_message = """
+system_message = """
 1. Your primary task is to evaluate students' written assignments based on a structured marking rubric.  
 2. Follow the instructions to mark:
     - Refer to the provided marking rubric to ensure accurate grading.
