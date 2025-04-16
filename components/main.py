@@ -29,7 +29,7 @@ with st.sidebar:
 #
 #        user_system_message = tab1.text_area("Enter prompts in points", height=200, placeholder="- First prompt\n- Second prompt\n- Third prompt")
 #
-#        tab2.text(default_system_message)
+#        tab2.text(system_message)
 #
 #        st.divider()
 #        temperature_setting = 0.2
@@ -51,7 +51,7 @@ with st.sidebar:
         for page in reader.pages:
             rubric += page.extract_text()
         st.success("Marking rubrics accepted")
-        st.write(rubric)
+        #st.write(rubric)
 
     group_zip = st.sidebar.file_uploader(":gray[Upload a zip file]", type=['zip'], help='Zip file should contain students submission in .docx')
        
@@ -72,7 +72,6 @@ if group_zip is not None:
         if 'msg_history' not in st.session_state:
             st.session_state.msg_history = []
         
-            
         st.session_state.msg_history.append({"role": "system", 
                                             "content": f"{system_message}"})
         

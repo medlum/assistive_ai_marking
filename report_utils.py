@@ -7,7 +7,6 @@ import streamlit as st
 from docx import Document
 from pypdf import PdfReader
 
-
 def extract_name_id(data):
      # Match "Name / Student ID" and capture the first non-empty line that follows it
     pattern = r"Name\s*/\s*Student ID\s*\n(?:\s*\n)*([A-Za-z \-']+\s*/?\s*[A-Za-z0-9]+)"
@@ -17,7 +16,6 @@ def extract_name_id(data):
     else:
         return "Name and student ID not found."
     
-
 def extract_and_read_files(zip_path):
 
     extracted_data = {}
@@ -54,8 +52,6 @@ def extract_and_read_files(zip_path):
            
     return extracted_data
 
-
-
 def process_data(data):
     # Convert list of dictionaries to DataFrame
     df = pd.DataFrame(data)
@@ -67,15 +63,16 @@ def process_data(data):
 system_message = """
 1. Your primary task is to evaluate students' written assignments based on a structured marking rubric.  
 2. Follow the instructions to mark:
-    - Refer to the provided marking rubric to ensure accurate grading.
-    - Assess each criterion separately, assigning marks accordingly.  
-    - Mark the report with a high standard.
-    - Do not assign more than the maximum mark in each marking criterion.
-    - Provide a detail feedback by identifying specific strengths and weaknesses of the report, offering constructive criticism on areas needing improvement. 
-    - Contextualize the feedback to the student's role and company he/she is interning. 
-    - Provide reasons on the marks given for each criterion.
-    - Tally the marks in each criterion.
-    - Comment on why the marks are given for each criteria as part of the feedback.
+    - Refer closely to the provided marking rubric to ensure accurate and consistent grading.
+    - Evaluate each criterion individually, assigning marks strictly according to the rubric.
+    - Maintain a high academic standard throughout the assessment.
+    - Do not exceed the maximum marks allocated for any criterion.
+    - Provide detailed and constructive feedback, identifying specific strengths and weaknesses of the report.
+    - Offer actionable suggestions for improvement in areas where the report falls short.
+    - Highlight any sentences or sections that require revision or enhancement.
+    - Justify the marks awarded for each criterion with clear, evidence-based reasoning.
+    - Incorporate explanations of the mark allocation within the feedback for each criterion.
+  
     - Return the marks and feedback in a dictionary : 
       {
           'Student Name': str,

@@ -13,9 +13,7 @@ def find_user_credentials(user_id, password):
     for user in users:
         if user['user_id'] == user_id and user['password'] == password:
             return True
-
     return None
-
 
 def login():
 
